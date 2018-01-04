@@ -32,6 +32,7 @@ int main()
     {
         rect.setPosition(i,300);
         rects.push_back(rect);
+        rects.push_back(rect);
         //rects[i].setSize(sf::Vector2f(i,50));
     }
     //sf::RectangleShape rect(sf::Vector2f(1,50));
@@ -58,12 +59,14 @@ int main()
                 {
                     //rects[i].setPosition(i,channel1->tab[i].magnitude);
                     //rects[i+400].setPosition(i+400,channel2->tab[i].magnitude);
-                    rects[i].setSize(sf::Vector2f(1,-5*(channel1->tab[i].magnitude-40)));
-                    rects[i+400].setSize(sf::Vector2f(1,-5*(channel2->tab[i].magnitude-40)));
+                    rects[2*i].setSize(sf::Vector2f(1,-5*(channel1->tab[i].magnitude-40)));
+                    rects[2*i+800].setSize(sf::Vector2f(1,-5*(channel2->tab[i].magnitude-40)));
+                    rects[2*i+1].setSize(sf::Vector2f(1,5*(channel1->tab[i].magnitude-40)));
+                    rects[2*i+1+800].setSize(sf::Vector2f(1,5*(channel2->tab[i].magnitude-40)));
                 }
             }
         window.clear();
-        for(int i = 0; i<800; i++)
+        for(int i = 0; i<1600; i++)
             window.draw(rects[i]);
         window.display();
     }
