@@ -8,6 +8,7 @@ struct Data
 {
     double freqwency;
     double magnitude;
+    double aplitude;
 };
 class FFT
 {
@@ -18,6 +19,7 @@ private:
     int currTime;
     int channel;
     WAVReader * file;
+    int data_size;
 public:
     Data * tab;
     FFT(WAVReader * file,int FPS,int channel)
@@ -29,6 +31,7 @@ public:
         in = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * file->FMT.nSamplesPerSec/FPS);
         out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * file->FMT.nSamplesPerSec/FPS);
         tab = new Data[file->FMT.nSamplesPerSec/FPS];
+        this->data_size = file->FMT.nSamplesPerSec/FPS;
     }
     ~FFT()
     {
@@ -42,6 +45,9 @@ public:
         for(int i = currTime; i<file->FMT.nSamplesPerSec/FPS+currTime; i++)  //60 FPS
         {
             in[i-currTime][0]=file->DATA.channels[channel][i];
+            in[i-currTime][1]=0;
+            out[i-currTime][0]=0;
+            out[i-currTime][1]=0;
         }
         currTime = file->FMT.nSamplesPerSec/FPS + currTime;     //TO DO - END OF DATA/MUSIC
 
@@ -51,9 +57,18 @@ public:
 
         for(int i = 0; i<file->FMT.nSamplesPerSec/FPS; i++)
         {
-            tab[i].magnitude = 10 * log10(sqrt(out[i][0]*out[i][0] + out[i][1]*out[i][1]));
+            tab[i].magnitude = 20 * log10(sqrt(out[i][0]*out[i][0] + out[i][1]*out[i][1]));
             tab[i].freqwency = i * FPS;
+            tab[i].aplitude = out[i][0];
         }
+    }
+    int getFPS()
+    {
+        return FPS;
+    }
+    int get_data_size()
+    {
+        return data_size;
     }
 
 };
