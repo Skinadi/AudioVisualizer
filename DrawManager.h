@@ -4,7 +4,9 @@
 #include <SFML/Graphics.hpp>
 #include "FFT.h"
 #include <vector>
-
+#include <math.h>
+#include <iostream>
+using namespace std;
 class DrawManager
 {
 private:
@@ -36,6 +38,20 @@ public:
             rects.push_back(rect);
             x+=rectanglewidth + spacewidth;
         }
+    }
+    void createrectanglescircle(double origin,double radius, int amount, double rectanglewidth, double rectangleheight=-300)
+    {
+        sf::RectangleShape rect (sf::Vector2f(rectanglewidth,rectangleheight));
+        double unitangle = 360/(double)amount;
+        for(int i = 0; i<amount; i++)
+        {
+            rect.setPosition(origin + radius*sin(i*unitangle*3.14f/180),800-(origin + radius * cos(i*unitangle*3.14f/180)));
+            rect.setRotation(i*unitangle);
+            //cout << i*unitangle << " " << sin(i*unitangle) << endl;
+            //cout << sin(3.14f) << " " << sin(6.28f) << " " << sin(180) << " " << sin(360) << endl;
+            rects.push_back(rect);
+        }
+        //rect.setRotation(45);
     }
     void updaterectangles()
     {

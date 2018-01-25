@@ -20,6 +20,9 @@ private:
     int channel;
     WAVReader * file;
     int data_size;
+
+    int * data;
+    int SamplesPerSecond;
 public:
     Data * tab;
     FFT(WAVReader * file,int FPS,int channel)
@@ -32,6 +35,9 @@ public:
         out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * file->FMT.nSamplesPerSec/FPS);
         tab = new Data[file->FMT.nSamplesPerSec/FPS];
         this->data_size = file->FMT.nSamplesPerSec/FPS;
+
+        data = file->DATA.channels[channel].data();
+        this->SamplesPerSecond=file->FMT.nSamplesPerSec;
     }
     ~FFT()
     {
@@ -42,20 +48,20 @@ public:
     }
     void calkulateNext()
     {
-        for(int i = currTime; i<file->FMT.nSamplesPerSec/FPS+currTime; i++)  //60 FPS
+        for(int i = currTime; i<SamplesPerSecond/FPS+currTime; i++)  //60 FPS
         {
-            in[i-currTime][0]=file->DATA.channels[channel][i];
+            in[i-currTime][0]=data[i];
             in[i-currTime][1]=0;
             out[i-currTime][0]=0;
             out[i-currTime][1]=0;
         }
-        currTime = file->FMT.nSamplesPerSec/FPS + currTime;     //TO DO - END OF DATA/MUSIC
+        currTime = SamplesPerSecond/FPS + currTime;     //TO DO - END OF DATA/MUSIC
 
-        p = fftw_plan_dft_1d(file->FMT.nSamplesPerSec/FPS, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
+        p = fftw_plan_dft_1d(SamplesPerSecond/FPS, in, out, FFTW_FORWARD, FFTW_ESTIMATE);
 
         fftw_execute(p); /* repeat as needed */
 
-        for(int i = 0; i<file->FMT.nSamplesPerSec/FPS; i++)
+        for(int i = 0; i<SamplesPerSecond/FPS; i++)
         {
             tab[i].magnitude = 20 * log10(sqrt(out[i][0]*out[i][0] + out[i][1]*out[i][1]));
             tab[i].freqwency = i * FPS;
