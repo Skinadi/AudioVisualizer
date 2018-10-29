@@ -2,9 +2,9 @@
 Application process .wav audio PCM file and show "sound" using FMT library to calculate data and SFML library to display results.
 
 ## Used Libraries
-SFML 2.4
-FFTW3
-FFMPEG - tool for conversion
+- SFML 2.4
+- FFTW3
+- FFMPEG - tool for conversion
 
 ## How to launch
 ### Ubuntu
