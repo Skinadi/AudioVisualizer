@@ -53,7 +53,7 @@ public:
         }
         //rect.setRotation(45);
     }
-    void updaterectangles()
+    void updaterectangles(int znak)
     {
         /*int j = 0;
         for(int i = 0; i<channel->get_data_size()/2; i+=channel->get_data_size()/2/ rects.size())
@@ -72,7 +72,7 @@ public:
                 //cout << channel->tab[j].magnitude << endl;
             }
             if(z<rects.size())
-            rects[z].setSize(sf::Vector2f(rects[z].getSize().x, -1*abs(-1 *channel->tab[i].magnitude+80)));
+            rects[z].setSize(sf::Vector2f(rects[z].getSize().x, znak*abs(-1 *channel->tab[i].magnitude+80)));
             z++;
         }
     }
